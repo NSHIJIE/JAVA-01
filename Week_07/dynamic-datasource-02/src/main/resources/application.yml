@@ -1,0 +1,29 @@
+spring:
+  shardingsphere:
+    datasource:
+      common:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: ccom.mysql.cj.jdbc.Driver
+      names: master,slave1,slave2
+      master:
+        jdbc-url: jdbc:mysql://192.168.5.135:3316/test??useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&serverTimezone=UTC&allowMultiQueries=true
+        username: databank_135
+        password: yoYi_2016
+      slave1:
+        jdbc-url: jdbc:mysql://192.168.5.135:3316/test_log??useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&serverTimezone=UTC&allowMultiQueries=true
+        username: rodatabank_135
+        password: yoYi_2016
+    rules:
+      replica-query:
+        data-sources:
+          ds:
+            primary-data-source-name: master
+            replica-data-source-names: slave1
+            load-balancer-name: round-robin
+        load-balancers:
+          round-robin:
+            type: ROUND_ROBIN
+            props:
+              defaule: 0
+    props:
+      sql-show: true
